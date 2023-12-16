@@ -13,29 +13,9 @@
 #include <typeinfo>
 #include <windows.h>
 
-using namespace std;
-
-// USER DEFINED FUNCTIONS
-// void title(); // TO GIVE THE TITLE                                                  
-// void date(); // TO GIVE THE DATE                                                   
-// int delay(); // TO DELAY THE DISPLAY               
-// void delay(unsigned int mseconds);                             
-// int adminLogin(); // LOGIN FUNCTION FOR TEACHERS                                              
-// int adminView(); // DISPLAY FOR THE TEACHERS                                              
-// int registerStudent(); // TO REGISTER STUDENTS                        
-// int checkListOfStudentsRegistered(); // TO CHECK THE LIST OF STUDENTS                       
-// int studentLogin(); // LOGIN FUNCTION FOR STUDENTS             
-// int studentView(); // DISPLAY FOR THE STUDENTS                                             
-// int checkStudentCredentials(string userName, string password); // CHECK PASSWORD
-// int markMyAttendance(string username); // MARK THE ATTENDANCE                       
-// int countMyAttendance(string username); // COUNT THE ATTENDANCE                       
-// int sendLeaveApplication(string username); // TO SEND LEAVE
-// int deleteAllStudents(); // TO DELETE ALL THE STUDENTS    
-// int getListOFStudentsRegistered(); // GET THE LIST OF STUDENTS
-// int deleteStudentAllData(); // DELETE STUDENT DATA
+// #include <bits/stdc++.h>
 
 using namespace std;
-
 int m = 0;
 int total = 100;
 class VisualHelp{
@@ -97,7 +77,7 @@ class Student:public VisualHelp{
         int registerStudent()
         {
             cout << "\n ------ Form to Register Student ------ \n\n";
-            string name, username, password, rollno, address, fathersname, mothersname;
+            string name, username, password, rollno;
             string flush;
             int total;
             getline(cin,flush);
@@ -111,17 +91,9 @@ class Student:public VisualHelp{
             getline(cin,rollno);
             getchar();
 
-            char add[100];
-            cout << "\nEnter Address: ";
-            cin.getline(add, 100);
-            cout << "\nEnter Father's Name: ";
-            getline(cin,fathersname);
-            cout << "\nEnter Mother's Name: ";
-            getline(cin,mothersname);
             cout << "\nEnter initial number of atendance: ";
             cin >> m;
-
-            // check if record already exist ...
+            
             ifstream read;
             read.open("db.dat");
             if (read)
@@ -161,9 +133,7 @@ class Student:public VisualHelp{
             out1 << username << "\n";
             out1 << password << "\n";
             out1 << rollno << "\n";
-            out1 << add << "\n";
-            out1 << fathersname << "\n";
-            out1 << mothersname << "\n";
+           
             out1 << m << "\n";
             out1.close();
 
@@ -183,8 +153,6 @@ class Student:public VisualHelp{
                 studentView();
                 return 0;
             }
-
-            // Options for Student
         int studentView()
             {
                 string username, password;
@@ -207,9 +175,9 @@ class Student:public VisualHelp{
                 {
                     cout << "\n\nPlease select an option ...\n";
                     cout << "---------------------------\n";
-                    cout << "\n1. Mark Attendance for Today";
-                    cout << "\n2. Count my Attendance";
-                    cout << "\n3. Send a leave application";
+                 
+                    cout << "\n1. Count my Attendance";
+
                     cout << "\n0. Go Back <-\n";
 
                     int choice;
@@ -218,17 +186,10 @@ class Student:public VisualHelp{
                     switch (choice)
                     {
                     case 1:
-                        markMyAttendance(username);
-                        break;
-                    case 2:
                         countMyAttendance(username);
+                        // markMyAttendance(username);
                         break;
-                    case 3:
-                        sendLeaveApplication(username);
-                        break;
-                    case 0:
-                        goBack = 1;
-                        break;
+                    
                     default:
                         cout << "\nInvalid choice. Please enter again.";
                         getchar();
@@ -236,17 +197,13 @@ class Student:public VisualHelp{
                     delay();
                     if (goBack == 1)
                     {
-                        break; // breaking the loop
+                        break; 
                     }
                 }
                 return 0;
             }
-
-            // Checking information/credentials of Student
         int checkStudentCredentials(string username, string password)
             {
-                // read file line by line and check if username-password.dat exist?
-                // if it exist return 1 else 0
 
                 ifstream read;
                 read.open("db.dat");
@@ -277,7 +234,7 @@ class Student:public VisualHelp{
                     string line;
                     while (line_number != 3 && getline(read, line))
                     {
-                        cout << "\n\nLine " << line;
+                        cout << line<<endl;
                         ++line_number;
                     }
                     cout << "\n\n";
@@ -291,50 +248,6 @@ class Student:public VisualHelp{
                 else
                     return 0;
             }
-
-            // Marking attendance of Student
-        int markMyAttendance(string username)
-            {
-                cout << "\n\n --- Marking Attendance for today!! --- \n\n";
-                int total_lines = 0;
-                string filename = username + ".dat";
-                ifstream read;
-                read.open(filename);
-                string line;
-                while (getline(read, line))
-                {
-                    ++total_lines;
-                }
-                read.close();
-
-                ifstream read1;
-                read1.open(filename);
-                if (read1)
-                {
-                    int line_no = 0;
-                    while (line_no != total_lines && getline(read1, line))
-                    {
-                        ++line_no;
-                    }
-                    if (line_no == total_lines)
-                    {
-                        cout << "\n\nInitial Attendance: " << line;
-                        cout << "\n\nAttendance marked!!!";
-                        int i;
-                        istringstream(line) >> i;
-                        i++;
-                        cout << "\n\nTotal present: " << i;
-                        cout << "\n\nPercentage of attendance: " << (i * 100 / total) << "%";
-                    }
-                }
-
-                cout << "\n\nPlease press any key to continue ...";
-                getchar();
-                getchar();
-                return 0;
-            }
-
-            // Counting attendance of Student
         int countMyAttendance(string username)
             {
                 cout << "\n\n --- Counting attendance for today!! --- \n\n";
@@ -374,26 +287,6 @@ class Student:public VisualHelp{
                 return 0;
             }
 
-            // Sending leave for absence
-        int sendLeaveApplication(string username)
-            {
-                char add[1000];
-                cout << "\nWrite your application here: ";
-                getchar();
-                cin.getline(add, 1000);
-
-                time_t now = time(0);
-                tm *ltm = localtime(&now);
-
-                ofstream out;
-                out.open("application.dat", ios::app);
-                out << add << " -> " << ltm->tm_mday << "/" << 1 + ltm->tm_mon << "/" << 1900 + ltm->tm_year << " -> " << username << "\n";
-                out.close();
-                cout << "\nApplication successfully sent !!";
-                cout << "\n\nPlease press any key to continue..";
-                getchar();
-                return 0;
-            }
 
 };
 
@@ -401,12 +294,57 @@ class Student:public VisualHelp{
 
 class Admin:public Student{
     public:
+        int markMyAttendance()
+            {
+                string username;
+                cout<<"Enter the username"<<endl;
+                cin>>username;
+
+                cout << "\n\n --- Marking Attendance for today!! --- \n\n";
+                int total_lines = 0;
+                string filename = username + ".dat";
+                ifstream read;
+                read.open(filename);
+                string line;
+                while (getline(read, line))
+                {
+                    ++total_lines;
+                }
+                read.close();
+
+                ifstream read1;
+                read1.open(filename);
+                if (read1)
+                {
+                    int line_no = 0;
+                    while (line_no != total_lines && getline(read1, line))
+                    {
+                        ++line_no;
+                    }
+                    if (line_no == total_lines)
+                    {
+                        cout << "\n\nInitial Attendance: " << line;
+                        cout << "\n\nAttendance marked!!!";
+                        int i;
+                        istringstream(line) >> i;
+                        i++;
+                        cout << "\n\nTotal present: " << i;
+                        // cout << "\n\nPercentage of attendance: " << (i * 100 / total) << "%";
+                    }
+                }
+
+                cout << "\n\nPlease press any key to continue ...";
+                getchar();
+                getchar();
+                return 0;
+            }
+
         int adminLogin()
         {
             system("cls");
             date();
             title();
-            cout << "\n --------- Admin Login --------- \n\n";
+            cout << "\n --------- Teacher Login --------- \n\n";
 
             string username;
             string password;
@@ -430,6 +368,7 @@ class Admin:public Student{
             }
             return 0;
         }
+        
 
         int adminView()
         {
@@ -442,10 +381,11 @@ class Admin:public Student{
                 cout << "\n\n\nPlease select an option ...\n";
                 cout << "---------------------------\n";
                 cout << "\n1. Register a Student";
-                cout << "\n2. Check list of Students registered and view Roll No.";
-                cout << "\n3. Delete all registered Students";
-                cout << "\n4. Get list of Students registered by Username";
-                cout << "\n5. Delete Data of Students";
+                cout << "\n2. Check list of Students registered and view Roll No."<<endl;
+                cout<<"3. Mark attendence "<<endl;
+                cout << "\n4. Delete all registered Students";
+                cout << "\n5. Get list of Students registered by Username";
+                cout << "\n6. Delete Data of Students";
                 cout << "\n0. Go back <-\n";
 
                 int choice;
@@ -460,14 +400,21 @@ class Admin:public Student{
                     checkListOfStudentsRegistered();
                     break;
                 case 3:
-                    deleteAllStudents();
+                    
+                    markMyAttendance();
                     break;
                 case 4:
-                    getListOFStudentsRegistered();
+                deleteAllStudents();
+                    // getListOFStudentsRegistered();
                     break;
                 case 5:
+                 getListOFStudentsRegistered();
+                    // deleteStudentAllData();
+                    break;
+                case 6:
                     deleteStudentAllData();
                     break;
+
                 case 0:
                     goBack = 1;
                     break;
@@ -649,19 +596,6 @@ class Admin:public Student{
         
 };
 
-
-
-// Registering Student
-
-
-// Checking list of Students registered with roll no
-
-
-//  Login part for Student
-
-// Deleting all registered Students
-
-// Main part of the Program
 int main(int argc, char **argv)
 {
     system("cls");
@@ -673,7 +607,7 @@ int main(int argc, char **argv)
     cout << "\t\t\t\t    -----------------------------------\n";
     cout << "\n\n";
     cout << "\t\t\t\t";
-    cout << "Prepared By    :    Rajjit Laishram";
+    cout << "Prepared By    :    Aastha Sharma";
     cout << "\n\n\t\t\t\tSchool Project :   Attendance Management of Students";
     cout << "\n\n\t\t\t\tPress Enter to continue......";
     getchar();
@@ -684,6 +618,7 @@ int main(int argc, char **argv)
         v.delay(150);
         printf(".");
     }
+    
     Admin a;
     Student s;
     while (1)
@@ -693,7 +628,7 @@ int main(int argc, char **argv)
         v.title();
         cout << "\n";
         cout << "1. Student Login\n";
-        cout << "2. Admin Login\n";
+        cout << "2. Teacher Login\n";
         cout << "0. Exit\n";
 
         int choice;
